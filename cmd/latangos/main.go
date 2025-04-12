@@ -31,6 +31,31 @@ func Run(ctx context.Context) error {
 			return
 		}
 
+		today := time.Now().Truncate(24 * time.Hour)
+		if !parsedDate.After(today) {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid date",
+			})
+			return
+		}
+
+		if origin == "" || destination == "" {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Origin and destination are required.",
+			})
+			return
+		}
+		if origin == destination {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Origin and destination cannot be the same.",
+			})
+			return
+		}
+		if (origin != MIA && origin != SCL) || (destination != MIA && destination != SCL) {
+			c.JSON(http.StatusOK, gin.H{})
+			return
+		}
+
 		c.JSON(http.StatusOK, flights(origin, destination, parsedDate))
 	})
 
