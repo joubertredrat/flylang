@@ -21,13 +21,17 @@ func Run(ctx context.Context) error {
 	r.GET("/api/v2/flights", func(c *gin.Context) {
 		departingFrom := c.Query("departingFrom")
 		arrivingTo := c.Query("arrivingTo")
-		departureDate := c.Query("departureDate")
+		departureDateStr := c.Query("departureDate")
+		departureDate, err := time.Parse("20060102", departureDateStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid departureDate format. Expected format: YYYYMMDD",
+			})
+			return
+		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"departingFrom": departingFrom,
-			"arrivingTo":    arrivingTo,
-			"departureDate": departureDate,
-		})
+		flights := flights(departingFrom, arrivingTo, departureDate)
+		c.JSON(http.StatusOK, flights)
 	})
 
 	srv := &http.Server{
