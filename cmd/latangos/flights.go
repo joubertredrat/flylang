@@ -1,115 +1,139 @@
 package latangos
 
-import "time"
+import (
+	"math"
+	"time"
+)
+
+var basePrice = float64(735)
+var weekMultiplier = map[time.Weekday]float64{
+	time.Monday:    1.1,
+	time.Tuesday:   1.15,
+	time.Wednesday: 1.20,
+	time.Thursday:  1.17,
+	time.Friday:    0.92,
+	time.Saturday:  0.89,
+	time.Sunday:    0.94,
+}
+
+func price(origin string, date time.Time) float64 {
+	wm := weekMultiplier[date.Weekday()]
+	dm := float64(1)
+	if origin == SCL {
+		dm = 1.04
+	}
+
+	return math.Round(basePrice*wm*dm*100) / 100
+}
 
 func flights(origin, destination string, date time.Time) []Flight {
 	switch date.Weekday() {
 	case time.Monday:
-		return monday(origin, destination)
+		return monday(origin, destination, date)
 	case time.Tuesday:
-		return tuesday(origin, destination)
+		return tuesday(origin, destination, date)
 	case time.Wednesday:
-		return wednesday(origin, destination)
+		return wednesday(origin, destination, date)
 	case time.Thursday:
-		return thursday(origin, destination)
+		return thursday(origin, destination, date)
 	case time.Friday:
-		return friday(origin, destination)
+		return friday(origin, destination, date)
 	case time.Saturday:
-		return saturday(origin, destination)
+		return saturday(origin, destination, date)
 	case time.Sunday:
-		return sunday(origin, destination)
+		return sunday(origin, destination, date)
 	default:
 		return []Flight{}
 	}
 }
 
-func monday(origin, destination string) []Flight {
+func sunday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			FlightNumber: "AA123",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    time.Now().Add(2 * time.Hour),
-			Arrival:      time.Now().Add(4 * time.Hour),
-			BasePrice:    199.99,
-		},
-	}
-}
-
-func tuesday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			FlightNumber: "AA124",
-			Origin:       origin,
-			Destination:  destination,
-			Departure:    time.Now().Add(3 * time.Hour),
-			Arrival:      time.Now().Add(5 * time.Hour),
-			BasePrice:    199.99,
-		},
-	}
-}
-
-func wednesday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			FlightNumber: "AA125",
-			Origin:       origin,
-			Destination:  destination,
-			Departure:    time.Now().Add(4 * time.Hour),
-			Arrival:      time.Now().Add(6 * time.Hour),
-			BasePrice:    199.93,
-		},
-	}
-}
-
-func thursday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			FlightNumber: "AA126",
-			Origin:       origin,
-			Destination:  destination,
-			Departure:    time.Now().Add(5 * time.Hour),
-			Arrival:      time.Now().Add(7 * time.Hour),
-			BasePrice:    199.94,
-		},
-	}
-}
-
-func friday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			FlightNumber: "AA127",
-			Origin:       origin,
-			Destination:  destination,
-			Departure:    time.Now().Add(6 * time.Hour),
-			Arrival:      time.Now().Add(8 * time.Hour),
-			BasePrice:    199.95,
-		},
-	}
-}
-
-func saturday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			FlightNumber: "AA128",
-			Origin:       origin,
-			Destination:  destination,
-			Departure:    time.Now().Add(7 * time.Hour),
-			Arrival:      time.Now().Add(9 * time.Hour),
-			BasePrice:    199.96,
-		},
-	}
-}
-
-func sunday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			FlightNumber: "AA129",
-			Origin:       origin,
-			Destination:  destination,
-			Departure:    time.Now().Add(8 * time.Hour),
+			Departure:    departure(origin, date),
 			Arrival:      time.Now().Add(10 * time.Hour),
-			BasePrice:    199.97,
+			BasePrice:    price(origin, date),
+		},
+	}
+}
+
+func monday(origin, destination string, date time.Time) []Flight {
+	return []Flight{
+		{
+			FlightNumber: flightnumber(origin, date),
+			Origin:       origin,
+			Destination:  destination,
+			Departure:    departure(origin, date),
+			Arrival:      arrival(origin, date),
+			BasePrice:    price(origin, date),
+		},
+	}
+}
+
+func tuesday(origin, destination string, date time.Time) []Flight {
+	return []Flight{
+		{
+			FlightNumber: flightnumber(origin, date),
+			Origin:       origin,
+			Destination:  destination,
+			Departure:    departure(origin, date),
+			Arrival:      arrival(origin, date),
+			BasePrice:    price(origin, date),
+		},
+	}
+}
+
+func wednesday(origin, destination string, date time.Time) []Flight {
+	return []Flight{
+		{
+			FlightNumber: flightnumber(origin, date),
+			Origin:       origin,
+			Destination:  destination,
+			Departure:    departure(origin, date),
+			Arrival:      arrival(origin, date),
+			BasePrice:    price(origin, date),
+		},
+	}
+}
+
+func thursday(origin, destination string, date time.Time) []Flight {
+	return []Flight{
+		{
+			FlightNumber: flightnumber(origin, date),
+			Origin:       origin,
+			Destination:  destination,
+			Departure:    departure(origin, date),
+			Arrival:      arrival(origin, date),
+			BasePrice:    price(origin, date),
+		},
+	}
+}
+
+func friday(origin, destination string, date time.Time) []Flight {
+	return []Flight{
+		{
+			FlightNumber: flightnumber(origin, date),
+			Origin:       origin,
+			Destination:  destination,
+			Departure:    departure(origin, date),
+			Arrival:      arrival(origin, date),
+			BasePrice:    price(origin, date),
+		},
+	}
+}
+
+func saturday(origin, destination string, date time.Time) []Flight {
+	return []Flight{
+		{
+			FlightNumber: flightnumber(origin, date),
+			Origin:       origin,
+			Destination:  destination,
+			Departure:    departure(origin, date),
+			Arrival:      arrival(origin, date),
+			BasePrice:    price(origin, date),
 		},
 	}
 }
