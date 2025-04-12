@@ -1,6 +1,9 @@
 package copana
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 func flights(origin, destination string, date time.Time) []Flight {
 	switch date.Weekday() {
@@ -30,12 +33,7 @@ func monday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(2 * time.Hour),
 			Arrival:   date.Add(4 * time.Hour),
 			Pricing:   300,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }
@@ -47,12 +45,7 @@ func tuesday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(3 * time.Hour),
 			Arrival:   date.Add(5 * time.Hour),
 			Pricing:   320,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }
@@ -64,12 +57,7 @@ func wednesday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(4 * time.Hour),
 			Arrival:   date.Add(6 * time.Hour),
 			Pricing:   340,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }
@@ -81,12 +69,7 @@ func thursday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(5 * time.Hour),
 			Arrival:   date.Add(7 * time.Hour),
 			Pricing:   360,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }
@@ -98,12 +81,7 @@ func friday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(6 * time.Hour),
 			Arrival:   date.Add(8 * time.Hour),
 			Pricing:   380,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }
@@ -115,12 +93,7 @@ func saturday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(7 * time.Hour),
 			Arrival:   date.Add(9 * time.Hour),
 			Pricing:   400,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }
@@ -132,12 +105,7 @@ func sunday(origin, destination string, date time.Time) []Flight {
 			Departure: date.Add(8 * time.Hour),
 			Arrival:   date.Add(10 * time.Hour),
 			Pricing:   420,
-			FlightSegments: []FlightSegment{
-				{
-					IATAFrom: origin,
-					IATATo:   destination,
-				},
-			},
+			Route:     fmt.Sprintf("%s->PTY->%s", origin, destination),
 		},
 	}
 }

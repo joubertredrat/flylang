@@ -39,7 +39,7 @@ func Run(ctx context.Context) error {
 		tokenExpiration = time.Now().Add(tokenValidityDuration)
 
 		c.XML(http.StatusOK, Token{
-			Token:  tokenData,
+			Value:  tokenData,
 			Expiry: fmt.Sprintf("%d seconds", int(tokenValidityDuration.Seconds())),
 		})
 	})
