@@ -53,28 +53,35 @@ func Run(ctx context.Context) error {
 		tokenMutex.Lock()
 		defer tokenMutex.Unlock()
 		if token != tokenData || time.Now().After(tokenExpiration) {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"error": "Invalid or expired token",
+			c.XML(http.StatusOK, Error{
+				Code:    7,
+				Message: "Invalid or expired token",
 			})
 			return
 		}
 
 		if iataFrom == "" || iataTo == "" || dateDeparture == "" {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Missing required fields: iata:from, iata:to, or date:departure",
+			c.XML(http.StatusOK, Error{
+				Code:    9,
+				Message: "Missing required fields: iata:from, iata:to, or date:departure",
 			})
 			return
 		}
 
 		parsedDate, err := time.Parse("02/01/06", dateDeparture)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Invalid date format. Use DD/MM/YY (e.g., 12/04/25).",
+			c.XML(http.StatusOK, Error{
+				Code:    15,
+				Message: "Invalid date format. Use DD/MM/YY (e.g., 12/04/91).",
 			})
 			return
 		}
 
 		flights := flights(iataFrom, iataTo, parsedDate)
+		if len(flights) == 0 {
+			c.String(http.StatusOK, "No flights found")
+			return
+		}
 
 		c.XML(http.StatusOK, flights)
 	})

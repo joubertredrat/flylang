@@ -32,7 +32,7 @@ func sunday(origin, destination string, date time.Time) []Flight {
 			Origin:       origin,
 			Destination:  destination,
 			Departure:    departure(origin, date),
-			Arrival:      time.Now().Add(10 * time.Hour),
+			Arrival:      arrival(origin, date),
 			BasePrice:    price(origin, date),
 		},
 	}
