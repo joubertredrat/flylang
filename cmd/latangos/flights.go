@@ -1,33 +1,13 @@
 package latangos
 
 import (
-	"math"
 	"time"
 )
 
-var basePrice = float64(735)
-var weekMultiplier = map[time.Weekday]float64{
-	time.Monday:    1.1,
-	time.Tuesday:   1.15,
-	time.Wednesday: 1.20,
-	time.Thursday:  1.17,
-	time.Friday:    0.92,
-	time.Saturday:  0.89,
-	time.Sunday:    0.94,
-}
-
-func price(origin string, date time.Time) float64 {
-	wm := weekMultiplier[date.Weekday()]
-	dm := float64(1)
-	if origin == SCL {
-		dm = 1.04
-	}
-
-	return math.Round(basePrice*wm*dm*100) / 100
-}
-
 func flights(origin, destination string, date time.Time) []Flight {
 	switch date.Weekday() {
+	case time.Sunday:
+		return sunday(origin, destination, date)
 	case time.Monday:
 		return monday(origin, destination, date)
 	case time.Tuesday:
@@ -40,8 +20,6 @@ func flights(origin, destination string, date time.Time) []Flight {
 		return friday(origin, destination, date)
 	case time.Saturday:
 		return saturday(origin, destination, date)
-	case time.Sunday:
-		return sunday(origin, destination, date)
 	default:
 		return []Flight{}
 	}

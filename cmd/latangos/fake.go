@@ -2,6 +2,7 @@ package latangos
 
 import (
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -10,6 +11,17 @@ const (
 	MIA           = "MIA"
 	FLIGHT_PREFIX = "LT"
 )
+
+var baseprice = float64(735)
+var weekmultiplier = map[time.Weekday]float64{
+	time.Monday:    1.1,
+	time.Tuesday:   1.15,
+	time.Wednesday: 1.20,
+	time.Thursday:  1.17,
+	time.Friday:    0.92,
+	time.Saturday:  0.89,
+	time.Sunday:    0.94,
+}
 
 var sufix = map[time.Weekday]map[string]string{
 	time.Sunday: {
@@ -50,6 +62,16 @@ var durationminutes = map[time.Weekday]int{
 	time.Thursday:  490,
 	time.Friday:    500,
 	time.Saturday:  500,
+}
+
+func price(origin string, date time.Time) float64 {
+	wm := weekmultiplier[date.Weekday()]
+	dm := float64(1)
+	if origin == SCL {
+		dm = 1.04
+	}
+
+	return math.Round(baseprice*wm*dm*100) / 100
 }
 
 func flightnumber(origin string, date time.Time) string {

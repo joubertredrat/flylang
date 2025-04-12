@@ -23,7 +23,7 @@ func Run(ctx context.Context) error {
 		origin := c.Query("origin")
 		destination := c.Query("destination")
 
-		parsedDate, err := time.Parse("2006-01-02", date)
+		departureDate, err := time.Parse("2006-01-02", date)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid date format. Use Y-m-d (e.g., 2025-04-12).",
@@ -32,7 +32,7 @@ func Run(ctx context.Context) error {
 		}
 
 		today := time.Now().Truncate(24 * time.Hour)
-		if !parsedDate.After(today) {
+		if !departureDate.After(today) {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid date",
 			})
@@ -45,18 +45,20 @@ func Run(ctx context.Context) error {
 			})
 			return
 		}
+
 		if origin == destination {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Origin and destination cannot be the same.",
 			})
 			return
 		}
+
 		if (origin != MIA && origin != SCL) || (destination != MIA && destination != SCL) {
 			c.JSON(http.StatusOK, gin.H{})
 			return
 		}
 
-		c.JSON(http.StatusOK, flights(origin, destination, parsedDate))
+		c.JSON(http.StatusOK, flights(origin, destination, departureDate))
 	})
 
 	srv := &http.Server{
