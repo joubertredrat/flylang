@@ -2,6 +2,7 @@ package copana
 
 import (
 	"context"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"sync"
@@ -37,9 +38,9 @@ func Run(ctx context.Context) error {
 		tokenData = newToken()
 		tokenExpiration = time.Now().Add(tokenValidityDuration)
 
-		c.XML(http.StatusOK, gin.H{
-			"token":      tokenData,
-			"expires_in": "1 minute",
+		c.XML(http.StatusOK, Token{
+			Token:  tokenData,
+			Expiry: fmt.Sprintf("%d seconds", int(tokenValidityDuration.Seconds())),
 		})
 	})
 
@@ -73,12 +74,9 @@ func Run(ctx context.Context) error {
 			return
 		}
 
-		c.XML(http.StatusOK, gin.H{
-			"message":        "ok",
-			"iata_from":      iataFrom,
-			"iata_to":        iataTo,
-			"date_departure": parsedDate.Format("2006-01-02"),
-		})
+		flights := flights(iataFrom, iataTo, parsedDate)
+
+		c.XML(http.StatusOK, flights)
 	})
 
 	srv := &http.Server{
