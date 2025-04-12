@@ -1,0 +1,13 @@
+type Flight {
+  flightNumber: String!
+  origin: String!
+  destination: String!
+  departure: String!
+  duration: Int!
+  price: Float!
+}
+
+type Query {
+  flights(origin: String!, destination: String!, date: String!): [Flight!]!
+  healthCheck: String!
+}

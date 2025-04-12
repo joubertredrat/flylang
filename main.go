@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"joubertredrat/flylang/cmd/americandes"
+	"joubertredrat/flylang/cmd/avionca"
 	"joubertredrat/flylang/cmd/copana"
 	"joubertredrat/flylang/cmd/latangos"
 	"joubertredrat/flylang/cmd/skylux"
@@ -38,6 +39,11 @@ func main() {
 	go func() {
 		if err := skylux.Run(ctx); err != nil {
 			log.Printf("Error on running server skylux: %v", err)
+		}
+	}()
+	go func() {
+		if err := avionca.Run(ctx); err != nil {
+			log.Printf("Error on running server avionca: %v", err)
 		}
 	}()
 
