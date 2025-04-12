@@ -2,6 +2,7 @@ package americandes
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -11,15 +12,42 @@ import (
 func Run(ctx context.Context) error {
 	r := gin.Default()
 
-	r.GET("/health-check", func(c *gin.Context) {
+	r.GET("/health_check", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"status": "OK",
-			"time":   time.Now().Format(time.RFC3339),
+			"server_status": "Running",
+			"timestamp":     time.Now().Unix(),
 		})
 	})
 
 	r.GET("/flights/search", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{})
+		codeFrom := c.Query("code_from")
+		codeTo := c.Query("code_to")
+		departureDay := c.Query("departure_day")
+		departureMonth := c.Query("departure_month")
+		departureYear := c.Query("departure_year")
+
+		departureDate, err := time.Parse("2006-01-02", fmt.Sprintf("%s-%s-%s", departureYear, departureMonth, departureDay))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid departure date"})
+			return
+		}
+
+		flights := flights(codeFrom, codeTo, departureDate)
+
+		c.JSON(http.StatusOK, FlightsResponse{
+			Metadata: FlightsResponseMetadata{
+				TotalFlights: len(flights),
+				ServerTime:   time.Now().Format(time.RFC3339),
+				Search: FlightsResponseMetadataSearch{
+					DepartureDay:   departureDay,
+					DepartureMonth: departureMonth,
+					DepartureYear:  departureYear,
+					CodeFrom:       codeFrom,
+					CodeTo:         codeTo,
+				},
+			},
+			Flights: flights,
+		})
 	})
 
 	srv := &http.Server{
