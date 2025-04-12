@@ -14,17 +14,16 @@ const (
 
 var basePrice = float64(940)
 var weekMultiplier = map[time.Weekday]float64{
-	time.Monday:    0.9,
+	time.Sunday:    1.20,
 	time.Tuesday:   0.85,
 	time.Wednesday: 0.80,
 	time.Thursday:  0.85,
 	time.Friday:    1.10,
 	time.Saturday:  1.15,
-	time.Sunday:    1.20,
 }
 
 var sufix = map[time.Weekday]map[string]string{
-	time.Monday: {
+	time.Sunday: {
 		SCL: "127",
 		MIA: "114",
 	},
@@ -51,7 +50,7 @@ var sufix = map[time.Weekday]map[string]string{
 }
 
 var duration = map[time.Weekday]int{
-	time.Monday:    480,
+	time.Sunday:    480,
 	time.Tuesday:   480,
 	time.Wednesday: 480,
 	time.Thursday:  480,

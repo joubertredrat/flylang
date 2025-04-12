@@ -14,13 +14,13 @@ const (
 
 var baseprice = float64(735)
 var weekmultiplier = map[time.Weekday]float64{
+	time.Sunday:    0.94,
 	time.Monday:    1.1,
 	time.Tuesday:   1.15,
 	time.Wednesday: 1.20,
 	time.Thursday:  1.17,
 	time.Friday:    0.92,
 	time.Saturday:  0.89,
-	time.Sunday:    0.94,
 }
 
 var sufix = map[time.Weekday]map[string]string{
