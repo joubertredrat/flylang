@@ -32,6 +32,32 @@ func Run(ctx context.Context) error {
 			return
 		}
 
+		today := time.Now().Truncate(24 * time.Hour)
+		if !departureDate.After(today) {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid date",
+			})
+			return
+		}
+
+		if (codeFrom != MIA && codeFrom != SCL) || (codeTo != MIA && codeTo != SCL) {
+			c.JSON(http.StatusOK, FlightsResponse{
+				Metadata: FlightsResponseMetadata{
+					TotalFlights: 0,
+					ServerTime:   time.Now().Format(time.RFC3339),
+					Search: FlightsResponseMetadataSearch{
+						DepartureDay:   departureDay,
+						DepartureMonth: departureMonth,
+						DepartureYear:  departureYear,
+						CodeFrom:       codeFrom,
+						CodeTo:         codeTo,
+					},
+				},
+				Flights: []Flight{},
+			})
+			return
+		}
+
 		flights := flights(codeFrom, codeTo, departureDate)
 
 		c.JSON(http.StatusOK, FlightsResponse{

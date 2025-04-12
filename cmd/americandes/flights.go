@@ -4,112 +4,99 @@ import "time"
 
 func flights(origin, destination string, date time.Time) []Flight {
 	switch date.Weekday() {
-	case time.Monday:
-		return monday(origin, destination)
-	case time.Tuesday:
-		return tuesday(origin, destination)
-	case time.Wednesday:
-		return wednesday(origin, destination)
-	case time.Thursday:
-		return thursday(origin, destination)
-	case time.Friday:
-		return friday(origin, destination)
-	case time.Saturday:
-		return saturday(origin, destination)
 	case time.Sunday:
-		return sunday(origin, destination)
+		return sunday(origin, destination, date)
+	case time.Monday:
+		return []Flight{}
+	case time.Tuesday:
+		return tuesday(origin, destination, date)
+	case time.Wednesday:
+		return wednesday(origin, destination, date)
+	case time.Thursday:
+		return thursday(origin, destination, date)
+	case time.Friday:
+		return friday(origin, destination, date)
+	case time.Saturday:
+		return saturday(origin, destination, date)
 	default:
 		return []Flight{}
 	}
 }
 
-func monday(origin, destination string) []Flight {
+func sunday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			ID:                "AM123",
+			ID:                flightnumber(origin, date),
 			IATACodeFrom:      origin,
 			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(2 * time.Hour),
-			DurationInMinutes: 120,
-			Amount:            250,
+			DepartureTime:     departure(origin, date),
+			DurationInMinutes: durationminutes(date),
+			Amount:            price(origin, date),
 		},
 	}
 }
 
-func tuesday(origin, destination string) []Flight {
+func tuesday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			ID:                "AM124",
+			ID:                flightnumber(origin, date),
 			IATACodeFrom:      origin,
 			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(3 * time.Hour),
-			DurationInMinutes: 150,
-			Amount:            260,
+			DepartureTime:     departure(origin, date),
+			DurationInMinutes: durationminutes(date),
+			Amount:            price(origin, date),
 		},
 	}
 }
 
-func wednesday(origin, destination string) []Flight {
+func wednesday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			ID:                "AM125",
+			ID:                flightnumber(origin, date),
 			IATACodeFrom:      origin,
 			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(4 * time.Hour),
-			DurationInMinutes: 180,
-			Amount:            270,
+			DepartureTime:     departure(origin, date),
+			DurationInMinutes: durationminutes(date),
+			Amount:            price(origin, date),
 		},
 	}
 }
 
-func thursday(origin, destination string) []Flight {
+func thursday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			ID:                "AM126",
+			ID:                flightnumber(origin, date),
 			IATACodeFrom:      origin,
 			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(5 * time.Hour),
-			DurationInMinutes: 200,
-			Amount:            280,
+			DepartureTime:     departure(origin, date),
+			DurationInMinutes: durationminutes(date),
+			Amount:            price(origin, date),
 		},
 	}
 }
 
-func friday(origin, destination string) []Flight {
+func friday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			ID:                "AM127",
+			ID:                flightnumber(origin, date),
 			IATACodeFrom:      origin,
 			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(6 * time.Hour),
-			DurationInMinutes: 220,
-			Amount:            290,
+			DepartureTime:     departure(origin, date),
+			DurationInMinutes: durationminutes(date),
+			Amount:            price(origin, date),
 		},
 	}
 }
 
-func saturday(origin, destination string) []Flight {
+func saturday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			ID:                "AM128",
+			ID:                flightnumber(origin, date),
 			IATACodeFrom:      origin,
 			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(7 * time.Hour),
-			DurationInMinutes: 240,
-			Amount:            300,
-		},
-	}
-}
-
-func sunday(origin, destination string) []Flight {
-	return []Flight{
-		{
-			ID:                "AM129",
-			IATACodeFrom:      origin,
-			IATACodeTo:        destination,
-			DepartureTime:     time.Now().Add(8 * time.Hour),
-			DurationInMinutes: 260,
-			Amount:            310,
+			DepartureTime:     departure(origin, date),
+			DurationInMinutes: durationminutes(date),
+			Amount:            price(origin, date),
 		},
 	}
 }
