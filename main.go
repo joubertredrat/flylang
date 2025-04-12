@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"joubertredrat/flylang/cmd/americandes"
+	"joubertredrat/flylang/cmd/copana"
 	"joubertredrat/flylang/cmd/latangos"
 )
 
@@ -26,6 +27,11 @@ func main() {
 	go func() {
 		if err := americandes.Run(ctx); err != nil {
 			log.Printf("Error on running server americandes: %v", err)
+		}
+	}()
+	go func() {
+		if err := copana.Run(ctx); err != nil {
+			log.Printf("Error on running server copana: %v", err)
 		}
 	}()
 
