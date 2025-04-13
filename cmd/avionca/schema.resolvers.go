@@ -2,16 +2,34 @@ package avionca
 
 import (
 	"context"
+	"errors"
 	"time"
 )
 
 func (r *queryResolver) Flights(ctx context.Context, origin string, destination string, date string) ([]*Flight, error) {
-	parsedDate, err := time.Parse("2006-01-02", date)
+	departureDate, err := time.Parse("2006-01-02", date)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("invalid date format")
 	}
 
-	return flights(origin, destination, parsedDate), nil
+	today := time.Now().Truncate(24 * time.Hour)
+	if !departureDate.After(today) {
+		return []*Flight{}, nil
+	}
+
+	if origin == "" || destination == "" {
+		return nil, errors.New("invalid origin and/or destination")
+	}
+
+	if origin == destination {
+		return nil, errors.New("not supported same origin and destination")
+	}
+
+	if (origin != MIA && origin != SCL) || (destination != MIA && destination != SCL) {
+		return []*Flight{}, nil
+	}
+
+	return flights(origin, destination, departureDate), nil
 }
 
 func (r *queryResolver) HealthCheck(ctx context.Context) (string, error) {

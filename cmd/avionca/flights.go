@@ -28,12 +28,12 @@ func flights(origin, destination string, date time.Time) []*Flight {
 func monday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV001",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(2 * time.Hour).Format(time.RFC3339),
-			Duration:     180, // 3 hours in minutes
-			Price:        250.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
@@ -41,12 +41,12 @@ func monday(origin, destination string, date time.Time) []*Flight {
 func tuesday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV002",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(3 * time.Hour).Format(time.RFC3339),
-			Duration:     240, // 4 hours in minutes
-			Price:        300.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
@@ -54,12 +54,12 @@ func tuesday(origin, destination string, date time.Time) []*Flight {
 func wednesday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV003",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(4 * time.Hour).Format(time.RFC3339),
-			Duration:     200, // 3 hours 20 minutes in minutes
-			Price:        280.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
@@ -67,12 +67,12 @@ func wednesday(origin, destination string, date time.Time) []*Flight {
 func thursday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV004",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(5 * time.Hour).Format(time.RFC3339),
-			Duration:     300, // 5 hours in minutes
-			Price:        350.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
@@ -80,12 +80,12 @@ func thursday(origin, destination string, date time.Time) []*Flight {
 func friday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV005",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(6 * time.Hour).Format(time.RFC3339),
-			Duration:     360, // 6 hours in minutes
-			Price:        400.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
@@ -93,12 +93,12 @@ func friday(origin, destination string, date time.Time) []*Flight {
 func saturday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV006",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(7 * time.Hour).Format(time.RFC3339),
-			Duration:     420, // 7 hours in minutes
-			Price:        450.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
@@ -106,12 +106,12 @@ func saturday(origin, destination string, date time.Time) []*Flight {
 func sunday(origin, destination string, date time.Time) []*Flight {
 	return []*Flight{
 		{
-			FlightNumber: "AV007",
+			FlightNumber: flightnumber(origin, date),
 			Origin:       origin,
 			Destination:  destination,
-			Departure:    date.Add(8 * time.Hour).Format(time.RFC3339),
-			Duration:     480, // 8 hours in minutes
-			Price:        500.00,
+			Departure:    departure(origin, date),
+			Duration:     arrival(date),
+			Price:        price(origin, date),
 		},
 	}
 }
