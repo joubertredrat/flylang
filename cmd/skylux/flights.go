@@ -23,32 +23,36 @@ func flights(origin, destination string, date time.Time) []Flight {
 	}
 }
 
-func monday(origin, destination string, date time.Time) []Flight {
+func sunday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			Callsign: "SL001",
+			Callsign: flightnumber(origin, date),
 			Routes: []FlightRoute{
 				{From: origin, To: "SPJC"},
 				{From: "SPJC", To: destination},
 			},
-			Departure: date.Add(2 * time.Hour),
-			Arrival:   date.Add(4 * time.Hour),
-			SeatPrice: 150.00,
+			Departure: departure(origin, date),
+			Arrival:   arrival(origin, date),
+			SeatPrice: price(origin, date),
 		},
 	}
+}
+
+func monday(origin, destination string, date time.Time) []Flight {
+	return []Flight{}
 }
 
 func tuesday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			Callsign: "SL002",
+			Callsign: flightnumber(origin, date),
 			Routes: []FlightRoute{
 				{From: origin, To: "SPJC"},
 				{From: "SPJC", To: destination},
 			},
-			Departure: date.Add(3 * time.Hour),
-			Arrival:   date.Add(5 * time.Hour),
-			SeatPrice: 160.00,
+			Departure: departure(origin, date),
+			Arrival:   arrival(origin, date),
+			SeatPrice: price(origin, date),
 		},
 	}
 }
@@ -56,14 +60,14 @@ func tuesday(origin, destination string, date time.Time) []Flight {
 func wednesday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			Callsign: "SL003",
+			Callsign: flightnumber(origin, date),
 			Routes: []FlightRoute{
 				{From: origin, To: "SPJC"},
 				{From: "SPJC", To: destination},
 			},
-			Departure: date.Add(4 * time.Hour),
-			Arrival:   date.Add(6 * time.Hour),
-			SeatPrice: 170.00,
+			Departure: departure(origin, date),
+			Arrival:   arrival(origin, date),
+			SeatPrice: price(origin, date),
 		},
 	}
 }
@@ -71,14 +75,14 @@ func wednesday(origin, destination string, date time.Time) []Flight {
 func thursday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			Callsign: "SL004",
+			Callsign: flightnumber(origin, date),
 			Routes: []FlightRoute{
 				{From: origin, To: "SPJC"},
 				{From: "SPJC", To: destination},
 			},
-			Departure: date.Add(5 * time.Hour),
-			Arrival:   date.Add(7 * time.Hour),
-			SeatPrice: 180.00,
+			Departure: departure(origin, date),
+			Arrival:   arrival(origin, date),
+			SeatPrice: price(origin, date),
 		},
 	}
 }
@@ -86,14 +90,14 @@ func thursday(origin, destination string, date time.Time) []Flight {
 func friday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			Callsign: "SL005",
+			Callsign: flightnumber(origin, date),
 			Routes: []FlightRoute{
 				{From: origin, To: "SPJC"},
 				{From: "SPJC", To: destination},
 			},
-			Departure: date.Add(6 * time.Hour),
-			Arrival:   date.Add(8 * time.Hour),
-			SeatPrice: 190.00,
+			Departure: departure(origin, date),
+			Arrival:   arrival(origin, date),
+			SeatPrice: price(origin, date),
 		},
 	}
 }
@@ -101,29 +105,14 @@ func friday(origin, destination string, date time.Time) []Flight {
 func saturday(origin, destination string, date time.Time) []Flight {
 	return []Flight{
 		{
-			Callsign: "SL006",
+			Callsign: flightnumber(origin, date),
 			Routes: []FlightRoute{
 				{From: origin, To: "SPJC"},
 				{From: "SPJC", To: destination},
 			},
-			Departure: date.Add(7 * time.Hour),
-			Arrival:   date.Add(9 * time.Hour),
-			SeatPrice: 200.00,
-		},
-	}
-}
-
-func sunday(origin, destination string, date time.Time) []Flight {
-	return []Flight{
-		{
-			Callsign: "SL007",
-			Routes: []FlightRoute{
-				{From: origin, To: "SPJC"},
-				{From: "SPJC", To: destination},
-			},
-			Departure: date.Add(8 * time.Hour),
-			Arrival:   date.Add(10 * time.Hour),
-			SeatPrice: 210.00,
+			Departure: departure(origin, date),
+			Arrival:   arrival(origin, date),
+			SeatPrice: price(origin, date),
 		},
 	}
 }

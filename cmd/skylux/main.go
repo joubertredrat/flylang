@@ -30,6 +30,33 @@ func Run(ctx context.Context) error {
 			return
 		}
 
+		today := time.Now().Truncate(24 * time.Hour)
+		if !departureDate.After(today) {
+			c.JSON(http.StatusUnprocessableEntity, gin.H{
+				"error": "You must provide future dates only, today is not acceptable",
+			})
+			return
+		}
+
+		if departingFrom == "" || arrivingTo == "" {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "You must provide both departingFrom and arrivingTo",
+			})
+			return
+		}
+
+		if departingFrom == arrivingTo {
+			c.JSON(http.StatusUnprocessableEntity, gin.H{
+				"error": "You must provide different values for departingFrom and arrivingTo",
+			})
+			return
+		}
+
+		if (departingFrom != KMIA && departingFrom != SCEL) || (arrivingTo != KMIA && arrivingTo != SCEL) {
+			c.JSON(http.StatusOK, gin.H{})
+			return
+		}
+
 		flights := flights(departingFrom, arrivingTo, departureDate)
 		c.JSON(http.StatusOK, flights)
 	})
