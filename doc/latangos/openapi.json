@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Latangos API",
+    "description": "API for search flights.",
+    "version": "7.2.18"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:19004",
+      "description": "QASTG server"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Returns the health status of the server.",
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "healthy"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2025-04-12T14:30:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flight": {
+      "get": {
+        "summary": "Search Flights",
+        "description": "Searches for flights based on origin, destination, and departure date.",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "The departure date in `YYYY-MM-DD` format.",
+            "schema": {
+              "type": "string",
+              "example": "2025-04-12"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "description": "The IATA code of the origin airport (e.g., MIA or SCL).",
+            "schema": {
+              "type": "string",
+              "example": "MIA"
+            }
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "description": "The IATA code of the destination airport (e.g., MIA or SCL).",
+            "schema": {
+              "type": "string",
+              "example": "SCL"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flights found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "flight_number": {
+                        "type": "string",
+                        "example": "LT001"
+                      },
+                      "origin": {
+                        "type": "string",
+                        "example": "MIA"
+                      },
+                      "destination": {
+                        "type": "string",
+                        "example": "SCL"
+                      },
+                      "departure": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-04-12T14:30:00Z"
+                      },
+                      "duration": {
+                        "type": "integer",
+                        "example": 180
+                      },
+                      "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 250.00
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid date format. Use Y-m-d (e.g., 2025-04-12)."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

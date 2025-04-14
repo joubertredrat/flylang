@@ -1,0 +1,157 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Skylux API",
+    "description": "API for health checks and flight searches.",
+    "version": "17.6.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:19005",
+      "description": "API"
+    }
+  ],
+  "paths": {
+    "/api/healthcheck": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Returns the health status of the server.",
+        "responses": {
+          "200": {
+            "description": "Server is running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "server_status": {
+                      "type": "string",
+                      "example": "Running"
+                    },
+                    "timestamp": {
+                      "type": "integer",
+                      "example": 1681234567
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/flights": {
+      "get": {
+        "summary": "Search Flights",
+        "description": "Searches for flights based on departure and arrival airports and departure date.",
+        "parameters": [
+          {
+            "name": "departingFrom",
+            "in": "query",
+            "required": true,
+            "description": "The ICAO code of the departure airport.",
+            "schema": {
+              "type": "string",
+              "example": ""
+            }
+          },
+          {
+            "name": "arrivingTo",
+            "in": "query",
+            "required": true,
+            "description": "The ICAO code of the arrival airport.",
+            "schema": {
+              "type": "string",
+              "example": ""
+            }
+          },
+          {
+            "name": "departureDate",
+            "in": "query",
+            "required": true,
+            "description": "The departure date in `YYYYMMDD` format.",
+            "schema": {
+              "type": "string",
+              "example": "20250412"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flights found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "flight_number": {
+                        "type": "string",
+                        "example": "SK001"
+                      },
+                      "origin": {
+                        "type": "string",
+                        "example": "KMIA"
+                      },
+                      "destination": {
+                        "type": "string",
+                        "example": "SCEL"
+                      },
+                      "departure": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-04-12T14:30:00Z"
+                      },
+                      "duration": {
+                        "type": "integer",
+                        "example": 180
+                      },
+                      "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 250.00
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid departureDate format. Expected format: YYYYMMDD"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "You must provide future dates only, today is not acceptable"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

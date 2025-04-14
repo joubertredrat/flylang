@@ -1,0 +1,138 @@
+openapi: 3.0.3
+info:
+  title: Americandes API
+  description: API for managing flight searches.
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:19001
+    description: Sandbox server
+paths:
+  /health_check:
+    get:
+      summary: Health Check
+      description: Returns the status of the server.
+      responses:
+        '200':
+          description: Server is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  server_status:
+                    type: string
+                    example: Running
+                  timestamp:
+                    type: integer
+                    example: 1681234567
+  /flights/search:
+    get:
+      summary: Search Flights
+      description: Searches for flights based on origin, destination, and departure date.
+      parameters:
+        - name: code_from
+          in: query
+          required: true
+          description: The IATA code of the origin airport (e.g., MIA or SCL).
+          schema:
+            type: string
+            example: MIA
+        - name: code_to
+          in: query
+          required: true
+          description: The IATA code of the destination airport (e.g., MIA or SCL).
+          schema:
+            type: string
+            example: SCL
+        - name: departure_day
+          in: query
+          required: true
+          description: The day of the departure date.
+          schema:
+            type: string
+            example: "12"
+        - name: departure_month
+          in: query
+          required: true
+          description: The month of the departure date.
+          schema:
+            type: string
+            example: "04"
+        - name: departure_year
+          in: query
+          required: true
+          description: The year of the departure date.
+          schema:
+            type: string
+            example: "2025"
+      responses:
+        '200':
+          description: Flights found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      total_flights:
+                        type: integer
+                        example: 2
+                      server_time:
+                        type: string
+                        format: date-time
+                        example: "2025-04-12T14:30:00Z"
+                      search:
+                        type: object
+                        properties:
+                          departure_day:
+                            type: string
+                            example: "12"
+                          departure_month:
+                            type: string
+                            example: "04"
+                          departure_year:
+                            type: string
+                            example: "2025"
+                          code_from:
+                            type: string
+                            example: MIA
+                          code_to:
+                            type: string
+                            example: SCL
+                  flights:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        flight_number:
+                          type: string
+                          example: AM001
+                        origin:
+                          type: string
+                          example: MIA
+                        destination:
+                          type: string
+                          example: SCL
+                        departure:
+                          type: string
+                          format: date-time
+                          example: "2025-04-12T14:30:00Z"
+                        duration:
+                          type: integer
+                          example: 180
+                        price:
+                          type: number
+                          format: float
+                          example: 250.00
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid date
