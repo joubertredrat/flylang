@@ -3,6 +3,7 @@ package skylux
 import (
 	"context"
 	"log"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -22,6 +23,9 @@ func Run(ctx context.Context) error {
 	})
 
 	r.GET("/api/v2/flights", func(c *gin.Context) {
+		simulatedDelay := time.Duration(rand.Intn(600)+1100) * time.Millisecond
+		time.Sleep(simulatedDelay)
+
 		departingFrom := c.Query("departingFrom")
 		arrivingTo := c.Query("arrivingTo")
 		departureDateStr := c.Query("departureDate")

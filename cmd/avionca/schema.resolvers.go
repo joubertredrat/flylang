@@ -3,10 +3,14 @@ package avionca
 import (
 	"context"
 	"errors"
+	"math/rand"
 	"time"
 )
 
 func (r *queryResolver) Flights(ctx context.Context, origin string, destination string, date string) ([]*Flight, error) {
+	simulatedDelay := time.Duration(rand.Intn(600)+1120) * time.Millisecond
+	time.Sleep(simulatedDelay)
+
 	departureDate, err := time.Parse("2006-01-02", date)
 	if err != nil {
 		return nil, errors.New("invalid date format")

@@ -3,6 +3,7 @@ package latangos
 import (
 	"context"
 	"log"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -22,6 +23,9 @@ func Run(ctx context.Context) error {
 	})
 
 	r.GET("/api/flight", func(c *gin.Context) {
+		simulatedDelay := time.Duration(rand.Intn(300)+800) * time.Millisecond
+		time.Sleep(simulatedDelay)
+
 		date := c.Query("date")
 		origin := c.Query("origin")
 		destination := c.Query("destination")

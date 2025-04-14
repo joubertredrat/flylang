@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -23,6 +24,9 @@ func Run(ctx context.Context) error {
 	})
 
 	r.GET("/flights/search", func(c *gin.Context) {
+		simulatedDelay := time.Duration(rand.Intn(500)+920) * time.Millisecond
+		time.Sleep(simulatedDelay)
+
 		codeFrom := c.Query("code_from")
 		codeTo := c.Query("code_to")
 		departureDay := c.Query("departure_day")

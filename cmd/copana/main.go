@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	tokenValidityDuration = 10 * time.Minute
+	tokenValidityDuration = 2 * time.Minute
 )
 
 var (
@@ -38,6 +38,9 @@ func Run(ctx context.Context) error {
 		tokenMutex.Lock()
 		defer tokenMutex.Unlock()
 
+		simulatedDelay := time.Duration(rand.Intn(700)+1020) * time.Millisecond
+		time.Sleep(simulatedDelay)
+
 		tokenData = newToken()
 		tokenExpiration = time.Now().Add(tokenValidityDuration)
 
@@ -48,6 +51,9 @@ func Run(ctx context.Context) error {
 	})
 
 	r.POST("/webservices/copana/version27_8_5/flight/search.wsd", func(c *gin.Context) {
+		simulatedDelay := time.Duration(rand.Intn(800)+1520) * time.Millisecond
+		time.Sleep(simulatedDelay)
+
 		iataFrom := c.PostForm("iata:departure_code")
 		iataTo := c.PostForm("iata:arrival_code")
 		dateDeparture := c.PostForm("date:departure")
