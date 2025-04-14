@@ -2,6 +2,7 @@ package skylux
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"time"
 
@@ -9,7 +10,9 @@ import (
 )
 
 func Run(ctx context.Context) error {
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
 
 	r.GET("/api/healthcheck", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -62,9 +65,16 @@ func Run(ctx context.Context) error {
 	})
 
 	srv := &http.Server{
-		Addr:    ":19004",
+		Addr:    ":19005",
 		Handler: r,
 	}
+
+	routes := r.Routes()
+	log.Printf("	Skylux API:")
+	for _, route := range routes {
+		log.Printf("	%-6s http://127.0.0.1%s%s", route.Method, srv.Addr, route.Path)
+	}
+	log.Printf("")
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -76,5 +86,7 @@ func Run(ctx context.Context) error {
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
+	log.Println("Stopped Skylux.")
 	return srv.Shutdown(shutdownCtx)
 }

@@ -13,44 +13,60 @@ import (
 	"joubertredrat/flylang/cmd/copana"
 	"joubertredrat/flylang/cmd/latangos"
 	"joubertredrat/flylang/cmd/skylux"
+
+	"github.com/gin-gonic/gin"
+)
+
+type (
+	Server struct {
+		name   string
+		runner func(ctx context.Context) error
+	}
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
+
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	go func() {
-		if err := latangos.Run(ctx); err != nil {
-			log.Printf("Error on running server latangos: %v", err)
-		}
-	}()
-	go func() {
-		if err := americandes.Run(ctx); err != nil {
-			log.Printf("Error on running server americandes: %v", err)
-		}
-	}()
-	go func() {
-		if err := copana.Run(ctx); err != nil {
-			log.Printf("Error on running server copana: %v", err)
-		}
-	}()
-	go func() {
-		if err := skylux.Run(ctx); err != nil {
-			log.Printf("Error on running server skylux: %v", err)
-		}
-	}()
-	go func() {
-		if err := avionca.Run(ctx); err != nil {
-			log.Printf("Error on running server avionca: %v", err)
-		}
-	}()
+	servers := []Server{
+		{
+			name:   "americandes",
+			runner: americandes.Run,
+		},
+		{
+			name:   "avionca",
+			runner: avionca.Run,
+		},
+		{
+			name:   "copana",
+			runner: copana.Run,
+		},
+		{
+			name:   "latangos",
+			runner: latangos.Run,
+		},
+		{
+			name:   "skylux",
+			runner: skylux.Run,
+		},
+	}
+
+	for _, server := range servers {
+		go func(name string, runner func(ctx context.Context) error) {
+			if err := runner(ctx); err != nil {
+				log.Printf("Error on running server %s: %v", name, err)
+			}
+		}(server.name, server.runner)
+	}
 
 	<-quit
-	log.Println("Stopping...")
+	log.Println("Stopping main...")
 	cancel()
 
 	time.Sleep(1 * time.Second)
-	log.Println("Stopped.")
+	log.Println("Finished.")
 }

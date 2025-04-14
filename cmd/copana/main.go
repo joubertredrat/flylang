@@ -3,6 +3,7 @@ package copana
 import (
 	"context"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"sync"
@@ -22,7 +23,9 @@ var (
 )
 
 func Run(ctx context.Context) error {
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
 
 	r.POST("/webservices/copana/version27_8_5/system/ping.wsd", func(c *gin.Context) {
 		c.XML(http.StatusOK, gin.H{
@@ -91,6 +94,13 @@ func Run(ctx context.Context) error {
 		Handler: r,
 	}
 
+	routes := r.Routes()
+	log.Printf("	Copana Webservice:")
+	for _, route := range routes {
+		log.Printf("	%-6s http://127.0.0.1%s%s", route.Method, srv.Addr, route.Path)
+	}
+	log.Printf("")
+
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			panic(err)
@@ -101,6 +111,8 @@ func Run(ctx context.Context) error {
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
+	log.Println("Stopped Copana.")
 	return srv.Shutdown(shutdownCtx)
 }
 
