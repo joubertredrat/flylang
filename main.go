@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"os"
 	"os/signal"
@@ -25,6 +26,9 @@ type (
 )
 
 func main() {
+	serverFlag := flag.String("server", "", "Specify which server to run (americandes, avionca, copana, latangos, skylux)")
+	flag.Parse()
+
 	gin.SetMode(gin.ReleaseMode)
 
 	quit := make(chan os.Signal, 1)
@@ -55,12 +59,30 @@ func main() {
 		},
 	}
 
-	for _, server := range servers {
-		go func(name string, runner func(ctx context.Context) error) {
-			if err := runner(ctx); err != nil {
-				log.Printf("Error on running server %s: %v", name, err)
+	if *serverFlag != "" {
+		var found bool
+		for _, server := range servers {
+			if server.name == *serverFlag {
+				found = true
+				go func(name string, runner func(ctx context.Context) error) {
+					if err := runner(ctx); err != nil {
+						log.Printf("Error on running server %s: %v", name, err)
+					}
+				}(server.name, server.runner)
+				break
 			}
-		}(server.name, server.runner)
+		}
+		if !found {
+			log.Fatalf("Server %s not found", *serverFlag)
+		}
+	} else {
+		for _, server := range servers {
+			go func(name string, runner func(ctx context.Context) error) {
+				if err := runner(ctx); err != nil {
+					log.Printf("Error on running server %s: %v", name, err)
+				}
+			}(server.name, server.runner)
+		}
 	}
 
 	<-quit

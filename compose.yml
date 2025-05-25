@@ -1,0 +1,74 @@
+services:
+  americandes:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SERVER_NAME: americandes
+      APP_PORT: 19001
+    networks:
+      flylang-network:
+        aliases:
+          - americandes.local
+    hostname: americandes.local
+    ports:
+      - "19001:19001"
+  avionca:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SERVER_NAME: avionca
+      APP_PORT: 19002
+    networks:
+      flylang-network:
+        aliases:
+          - avionca.local
+    hostname: avionca.local
+    ports:
+      - "19002:19002"
+  copana:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SERVER_NAME: copana
+      APP_PORT: 19003
+    networks:
+      flylang-network:
+        aliases:
+          - copana.local
+    hostname: copana.local
+    ports:
+      - "19003:19003"
+  latangos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SERVER_NAME: latangos
+      APP_PORT: 19004
+    networks:
+      flylang-network:
+        aliases:
+          - latangos.local
+    hostname: latangos.local
+    ports:
+      - "19004:19004"
+  skylux:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SERVER_NAME: skylux
+      APP_PORT: 19005
+    networks:
+      flylang-network:
+        aliases:
+          - skylux.local
+    hostname: skylux.local
+    ports:
+      - "19005:19005"
+
+networks:
+  flylang-network:
