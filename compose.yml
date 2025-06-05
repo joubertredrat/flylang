@@ -69,6 +69,22 @@ services:
     hostname: skylux.local
     ports:
       - "19005:19005"
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "9281:81"
+    volumes:
+      - ./data/nginx:/data
+      - ./data/letsencrypt:/etc/letsencrypt
+    networks:
+      flylang-network:
+        aliases:
+          - nginx-proxy-manager.local
+    hostname: nginx-proxy-manager.local
 
 networks:
   flylang-network:
