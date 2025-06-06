@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:19005",
+      "url": "https://skylux.flylang.jobsityapps.com",
       "description": "API"
     }
   ],

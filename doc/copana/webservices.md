@@ -4,9 +4,7 @@
 The Copana Webservice provides endpoints for system health checks, token authentication, and flight search operations. This API uses XML for request and response formats, adhering to webservice standards.
 
 ### Base URL
-```
-http://127.0.0.1:19003
-```
+**https://copana.flylang.jobsityapps.com**
 
 ---
 

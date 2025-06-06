@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:19004",
+      "url": "https://latangos.flylang.jobsityapps.com",
       "description": "QASTG server"
     }
   ],
