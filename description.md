@@ -10,7 +10,7 @@ Users will enter a destination and receive a response containing:
 * A comparison of prices from multiple providers.
 
 ## Assignment
-* Fetch flight prices from all five airline APIs provided.
+* Fetch flight prices from all five airline APIs provided: Americandes, Avionca, Copana, Latangos and Skylux.
 * Compare the prices and time.
 * Sort and structure the response.
 * Implement JWT authentication.
