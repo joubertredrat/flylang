@@ -16,6 +16,18 @@ Users will enter a destination and receive a response containing:
 * Implement JWT authentication.
 * Ensure parallel API requests.
 
+## API documentation
+All five airline APIs—Americandes, Avionca, Copana, Latangos, and Skylux—are fully documented. Please review their documentation and perform a health check on each API before starting your implementation.
+
+| API | Endpoint |
+|-----|-----|
+| Americandes | https://americandes.flylang.jobsityapps.com |
+| Avionca | https://avionca.flylang.jobsityapps.com/graphql |
+| Copana | https://copana.flylang.jobsityapps.com |
+| Latangos | https://latangos.flylang.jobsityapps.com |
+| Skylux | https://skylux.flylang.jobsityapps.com |
+
+
 ## Mandatory features
 ### RESTful Endpoints & Authentication
 * GET /flights/search?origin=XXX&destination=YYY&date=YYYY-MM-DD → Returns flight price comparisons.
